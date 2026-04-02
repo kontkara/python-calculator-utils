@@ -13,3 +13,8 @@ def add_with_logging(*args: Union[Tuple[Union[int, float], ...]]) -> float:
     except TypeError as e:
         print(f"Warning: {e}")
         return None
+
+def check_inputs(*inputs: Union[Tuple[Union[int, float], ...]]) -> bool:
+    for arg in inputs:
+        if not isinstance(arg, (int, float)):
+            raise ValueError("All operands must be integers or floats")
