@@ -10,7 +10,6 @@ TARGET_FILE = "calculator.py"
 def ask_local_ai(prompt, current_code):
     full_prompt = f"{prompt}\n\nCurrent code:\n{current_code}"
     try:
-        # Mac ortamında subprocess daha güvenlidir
         result = subprocess.run(
             ['ollama', 'run', 'llama3', full_prompt],
             capture_output=True, text=True
@@ -21,9 +20,18 @@ def ask_local_ai(prompt, current_code):
         return ""
 
 def extract_code(llm_output):
-    match = re.search(r'```python\n(.*?)\n```', llm_output, re.DOTALL)
+    # 1. İhtimal: Markdown bloğu kullanmışsa yakala
+    match = re.search(r'```[a-zA-Z]*\n(.*?)\n```', llm_output, re.DOTALL)
     if match:
         return match.group(1).strip()
+    
+    # 2. İhtimal: Markdown kullanmamış ama direkt kod yazmışsa
+    if "def " in llm_output or "import " in llm_output or "class " in llm_output:
+        lines = llm_output.split('\n')
+        # Gevezelikleri temizle
+        code_lines = [line for line in lines if not line.lower().startswith(("here is", "sure", "i added", "this code", "note:", "```"))]
+        return "\n".join(code_lines).strip()
+        
     return None
 
 def run():
@@ -62,15 +70,16 @@ def run():
                 os.system("git push origin main")
                 print(f"[{datetime.now().strftime('%H:%M')}] Başarılı: '{msg}' commiti atıldı.")
             else:
-                print("Hata: Geçerli kod üretilemedi, atlanıyor.")
+                # EĞER HATA VERİRSE LLAMA'NIN NE DEDİĞİNİ EKRANA BASACAK
+                print("\n--- DİKKAT: Geçerli kod bulunamadı ---")
+                print(f"Llama 3'ün ham cevabı:\n{output[:300]}...\n---------------------------------------")
+                print("Bu adım atlandı.\n")
 
-            # İki commit arası 45 dakika ile 3 saat arası bekle
             if i < daily_commits - 1:
                 pause = random.randint(2700, 10800)
                 print(f"Mola veriliyor... {pause//60} dakika sonra devam edilecek.")
                 time.sleep(pause)
 
-        # Gün bitti, 14 ile 20 saat arası uyu (insan simülasyonu)
         sleep_until_tomorrow = random.randint(50400, 72000)
         print(f"Günlük mesai bitti. {sleep_until_tomorrow//3600} saat uyunuyor...")
         time.sleep(sleep_until_tomorrow)
