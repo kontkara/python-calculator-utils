@@ -18,3 +18,7 @@ def check_inputs(*inputs: Union[Tuple[Union[int, float], ...]]) -> bool:
     for arg in inputs:
         if not isinstance(arg, (int, float)):
             raise ValueError("All operands must be integers or floats")
+
+def is_valid_input(*inputs: Union[Tuple[Union[int, float], ...]]) -> None:
+    check_inputs(*inputs)
+    return
