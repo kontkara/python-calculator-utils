@@ -19,11 +19,11 @@ def check_inputs(*inputs: Union[Tuple[Union[int, float], ...]]) -> bool:
         if not isinstance(arg, (int, float)):
             raise ValueError("All operands must be integers or floats")
 
-def main():
-    def is_valid_input_and_calculate(inputs: Union[Tuple[Union[int, float], ...]]) -> float:
-        check_inputs(*inputs)
-        return sum(inputs)
+def is_valid_input_and_calculate(inputs: Union[Tuple[Union[int, float], ...]]) -> float:
+    check_inputs(*inputs)
+    return sum(inputs)
 
+def main():
     try:
         print(is_valid_input_and_calculate((1, 2, 3)))
     except ValueError as e:
