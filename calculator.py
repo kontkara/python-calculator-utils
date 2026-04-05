@@ -31,3 +31,12 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+def calculate_with_logging(*args: Union[Tuple[Union[int, float], ...]]) -> float:
+    try:
+        result = sum(args)
+        print(f"Result: {result}")
+        return result
+    except TypeError as e:
+        print(f"Warning: {e}")
+        return None
