@@ -40,3 +40,8 @@ def calculate_with_logging(*args: Union[Tuple[Union[int, float], ...]]) -> float
     except TypeError as e:
         print(f"Warning: {e}")
         return None
+
+def validate_and_calculate_with_logging(*args: Union[Tuple[Union[int, float], ...]]) -> float:
+    if not check_inputs(*args):
+        raise ValueError("Invalid input")
+    return calculate_with_logging(*args)
