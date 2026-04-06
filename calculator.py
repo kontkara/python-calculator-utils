@@ -54,3 +54,18 @@ def add_or_calculate_with_logging(op: callable, *args: Union[Tuple[Union[int, fl
     except TypeError as e:
         print(f"Warning: {e}")
         return None
+
+def wrap_and_log_result(op: callable, *args: Union[Tuple[Union[int, float], ...]]) -> float:
+    try:
+        result = op(*args)
+        print(f"Result: {result}")
+        return result
+    except ValueError as e:
+        print(f"Error: {e}")
+        return None
+
+def main2():
+    wrap_and_log_result(add, 1, 2)
+
+if __name__ == "__main__":
+    main2()
