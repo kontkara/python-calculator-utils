@@ -45,3 +45,12 @@ def validate_and_calculate_with_logging(*args: Union[Tuple[Union[int, float], ..
     if not check_inputs(*args):
         raise ValueError("Invalid input")
     return calculate_with_logging(*args)
+
+def add_or_calculate_with_logging(op: callable, *args: Union[Tuple[Union[int, float], ...]]) -> float:
+    try:
+        result = op(*args)
+        print(f"Result: {result}")
+        return result
+    except TypeError as e:
+        print(f"Warning: {e}")
+        return None
