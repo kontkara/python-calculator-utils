@@ -64,12 +64,6 @@ def wrap_and_log_result(op: callable, *args: Union[Tuple[Union[int, float], ...]
         print(f"Error: {e}")
         return None
 
-def main2():
-    wrap_and_log_result(add, 1, 2)
-
-if __name__ == "__main__":
-    main2()
-
 def log_input(*inputs: Union[Tuple[Union[int, float], ...]]) -> None:
     print(f"Inputs: {', '.join(map(str, inputs))}")
 
@@ -79,3 +73,11 @@ def wrapped_main2():
 
 if __name__ == "__main__":
     wrapped_main2()
+
+def main1():
+    result = add_or_calculate_with_logging(is_valid_input_and_calculate, (1, 2, 3))
+    if result is None:
+        print("Error occurred during calculation")
+
+if __name__ == "__main__":
+    main1()
