@@ -69,3 +69,13 @@ def main2():
 
 if __name__ == "__main__":
     main2()
+
+def log_input(*inputs: Union[Tuple[Union[int, float], ...]]) -> None:
+    print(f"Inputs: {', '.join(map(str, inputs))}")
+
+def wrapped_main2():
+    log_input(1, 2)
+    wrap_and_log_result(add, 1, 2)
+
+if __name__ == "__main__":
+    wrapped_main2()
