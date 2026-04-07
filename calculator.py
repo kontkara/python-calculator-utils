@@ -81,3 +81,18 @@ def main1():
 
 if __name__ == "__main__":
     main1()
+
+def handle_error(op: callable, *args: Union[Tuple[Union[int, float], ...]]) -> float:
+    try:
+        return op(*args)
+    except ValueError as e:
+        print(f"Error: {e}")
+        return None
+
+def wrapped_main():
+    result = handle_error(is_valid_input_and_calculate, (1, 2, 3))
+    if result is None:
+        print("Error occurred during calculation")
+
+if __name__ == "__main__":
+    wrapped_main()
