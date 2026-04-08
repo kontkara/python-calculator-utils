@@ -14,18 +14,18 @@ def add_with_logging(*args: Union[Tuple[Union[int, float], ...]]) -> float:
         print(f"Warning: {e}")
         return None
 
-def add_and_log_input(op: callable, *args: Union[Tuple[Union[int, float], ...]]) -> float:
+def log_input_and_call(op: callable, *args: Union[Tuple[Union[int, float], ...]]) -> float:
     try:
         result = op(*args)
         log_input(args)
         print(f"Result: {result}")
         return result
-    except ValueError as e:
+    except (ValueError, TypeError) as e:
         print(f"Error: {e}")
         return None
 
 def wrapped_main():
-    result = add_and_log_input(is_valid_input_and_calculate, (1, 2, 3))
+    result = log_input_and_call(lambda x: add(*x), (1, 2, 3))
     if result is None:
         print("Error occurred during calculation")
 
