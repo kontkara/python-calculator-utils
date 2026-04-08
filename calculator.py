@@ -16,6 +16,8 @@ def add_with_logging(*args: Union[Tuple[Union[int, float], ...]]) -> float:
 
 def log_input_and_call(op: callable, *args: Union[Tuple[Union[int, float], ...]]) -> float:
     try:
+        if len(args) != op.__code__.co_argcount:
+            raise ValueError("Number of arguments does not match the function signature")
         result = op(*args)
         log_input(args)
         print(f"Result: {result}")
