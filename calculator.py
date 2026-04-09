@@ -27,7 +27,7 @@ def log_input_and_call(op: callable, *args: Union[Tuple[Union[int, float], ...]]
         return None
 
 def wrapped_main():
-    result = log_input_and_call(lambda x: add(*x), (1, 2, 3))
+    result = log_input_and_call(lambda x: sum(x), (1, 2, 3))
     if result is None:
         print("Error occurred during calculation")
 
