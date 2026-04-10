@@ -46,6 +46,15 @@ def is_valid_input(op: callable, *args: Union[Tuple[Union[int, float], ...]]) ->
             return False
     return True
 
+def validate_and_call(op: callable, *args: Union[Tuple[Union[int, float], ...]]) -> float:
+    if is_valid_input(op, *args):
+        return log_input_and_call(op, *args)
+    print("Invalid input")
+    return None
+
 if __name__ == "__main__":
     wrapped_main()
     check_result(lambda x: sum(x), (1, 2, 3))
+    result = validate_and_call(lambda x: sum(x), (1, 2, 3))
+    if result is None:
+        print("Error occurred during calculation")
