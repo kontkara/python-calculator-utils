@@ -38,6 +38,14 @@ def check_result(func: callable, *args: Union[Tuple[Union[int, float], ...]]) ->
     except Exception as e:
         print(f"Error: {e}")
 
+def is_valid_input(op: callable, *args: Union[Tuple[Union[int, float], ...]]) -> bool:
+    if len(args) != op.__code__.co_argcount:
+        return False
+    for arg in args:
+        if not isinstance(arg, (int, float)):
+            return False
+    return True
+
 if __name__ == "__main__":
     wrapped_main()
     check_result(lambda x: sum(x), (1, 2, 3))
