@@ -31,5 +31,13 @@ def wrapped_main():
     if result is None:
         print("Error occurred during calculation")
 
+def check_result(func: callable, *args: Union[Tuple[Union[int, float], ...]]) -> None:
+    try:
+        result = func(*args)
+        print(f"Result: {result}")
+    except Exception as e:
+        print(f"Error: {e}")
+
 if __name__ == "__main__":
     wrapped_main()
+    check_result(lambda x: sum(x), (1, 2, 3))
