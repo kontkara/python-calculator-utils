@@ -52,9 +52,12 @@ def validate_and_call(op: callable, *args: Union[Tuple[Union[int, float], ...]])
     print("Invalid input")
     return None
 
-if __name__ == "__main__":
+def main():
     wrapped_main()
     check_result(lambda x: sum(x), (1, 2, 3))
     result = validate_and_call(lambda x: sum(x), (1, 2, 3))
     if result is None:
         print("Error occurred during calculation")
+
+if __name__ == "__main__":
+    main()
