@@ -59,5 +59,12 @@ def main():
     if result is None:
         print("Error occurred during calculation")
 
+def handle_exceptions(func: callable, *args: Union[Tuple[Union[int, float], ...]]) -> float:
+    try:
+        return func(*args)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
 if __name__ == "__main__":
     main()
