@@ -52,19 +52,14 @@ def validate_and_call(op: callable, *args: Union[Tuple[Union[int, float], ...]])
     print("Invalid input")
     return None
 
-def main():
-    wrapped_main()
-    check_result(lambda x: sum(x), (1, 2, 3))
-    result = validate_and_call(lambda x: sum(x), (1, 2, 3))
-    if result is None:
-        print("Error occurred during calculation")
-
-def handle_exceptions(func: callable, *args: Union[Tuple[Union[int, float], ...]]) -> float:
+def handle_exceptions(func: callable, *args: Union[Tuple[Union[int, float], ...]], default=None) -> float:
     try:
         return func(*args)
     except Exception as e:
         print(f"An error occurred: {e}")
-        return None
+        return default if default is not None else None
 
 if __name__ == "__main__":
     main()
+    result = handle_exceptions(lambda x: sum(x), (1, 2, 3), default=-1.0)
+    print("Default value:", result)
