@@ -59,6 +59,9 @@ def handle_exceptions(func: callable, *args: Union[Tuple[Union[int, float], ...]
         print(f"An error occurred: {e}")
         return default if default is not None else None
 
+def main():
+    check_result(lambda x: sum(x), (1, 2, 3))
+
 if __name__ == "__main__":
     main()
     result = handle_exceptions(lambda x: sum(x), (1, 2, 3), default=-1.0)
