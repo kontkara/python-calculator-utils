@@ -1,3 +1,4 @@
+python
 def check_result(func: callable, *args: Union[Tuple[Union[int, float], ...], None]) -> None:
     try:
         result = func(*args)
@@ -9,3 +10,6 @@ def check_result(func: callable, *args: Union[Tuple[Union[int, float], ...], Non
         print(f"TypeError: {e}")
     except Exception as e:
         print(f"Error: {e}")
+    finally:
+        if isinstance(result, (int, float)):
+            return result
