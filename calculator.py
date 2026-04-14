@@ -1,9 +1,9 @@
-python
-def check_result(func: callable, *args: Union[Tuple[Union[int, float], ...], None]) -> None:
+def check_result(func: callable, *args: Union[Tuple[Union[int, float], ...], None]) -> Optional[float]:
     try:
         result = func(*args)
         if isinstance(result, (int, float)):
             print(f"Result: {result}")
+            return result  # Return the result
         elif result is not None:
             print("Non-numeric result")
     except TypeError as e:
@@ -11,5 +11,4 @@ def check_result(func: callable, *args: Union[Tuple[Union[int, float], ...], Non
     except Exception as e:
         print(f"Error: {e}")
     finally:
-        if isinstance(result, (int, float)):
-            return result
+        pass
