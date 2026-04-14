@@ -13,3 +13,5 @@ def check_result(func: callable, *args: Union[Tuple[Union[int, float], ...], Non
     finally:
         if result is not None and not isinstance(result, (int, float)):
             raise ValueError(f"Unexpected non-numeric result: {result}")
+        if result is None:
+            print("No result")
