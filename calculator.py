@@ -19,5 +19,7 @@ def check_result(func: callable, *args: Union[Tuple[Union[int, float], ...], Non
             print("No result")
 
 def get_result(func: callable, *args: Union[Tuple[Union[int, float], ...], None]) -> Optional[float]:
-    check_result(func, *args)
-    return func(*args)
+    try:
+        return check_result(func, *args)
+    except ValueError as e:
+        raise ValueError(f"Unexpected non-numeric result: {e}") from None
