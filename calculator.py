@@ -1,3 +1,5 @@
+from typing import Union, Tuple, Optional
+
 def check_result(func: callable, *args: Union[Tuple[Union[int, float], ...], None]) -> Optional[float]:
     try:
         result = func(*args)
@@ -15,3 +17,7 @@ def check_result(func: callable, *args: Union[Tuple[Union[int, float], ...], Non
             raise ValueError(f"Unexpected non-numeric result: {result}")
         if result is None:
             print("No result")
+
+def get_result(func: callable, *args: Union[Tuple[Union[int, float], ...], None]) -> Optional[float]:
+    check_result(func, *args)
+    return func(*args)
