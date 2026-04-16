@@ -20,6 +20,10 @@ def check_result(func: callable, *args: Union[Tuple[Union[int, float], ...], Non
 
 def get_result(func: callable, *args: Union[Tuple[Union[int, float], ...], None]) -> Optional[float]:
     try:
-        return check_result(func, *args)
+        result = check_result(func, *args)
+        if isinstance(result, (int, float)):
+            return result
+        else:
+            raise ValueError(f"get_result should not return {result}")
     except ValueError as e:
         raise ValueError(f"Unexpected non-numeric result: {e}") from None
