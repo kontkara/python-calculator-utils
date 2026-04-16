@@ -15,8 +15,6 @@ def check_result(func: callable, *args: Union[Tuple[Union[int, float], ...], Non
     finally:
         if result is not None and not isinstance(result, (int, float)):
             raise ValueError(f"Unexpected non-numeric result: {result}")
-        if result is None:
-            print("No result")
 
 def get_result(func: callable, *args: Union[Tuple[Union[int, float], ...], None]) -> Optional[float]:
     try:
@@ -27,3 +25,6 @@ def get_result(func: callable, *args: Union[Tuple[Union[int, float], ...], None]
             raise ValueError(f"get_result should not return {result}")
     except ValueError as e:
         raise ValueError(f"Unexpected non-numeric result: {e}") from None
+
+def _process_args(*args: Union[Tuple[Union[int, float], ...], None]) -> Tuple[Optional[float]]:
+    return tuple(arg if isinstance(arg, (int, float)) else None for arg in args)
