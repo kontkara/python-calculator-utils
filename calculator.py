@@ -28,3 +28,10 @@ def get_result(func: callable, *args: Union[Tuple[Union[int, float], ...], None]
 
 def _process_args(*args: Union[Tuple[Union[int, float], ...], None]) -> Tuple[Optional[float]]:
     return tuple(arg if isinstance(arg, (int, float)) else None for arg in args)
+
+def process_and_call(func: callable, *args: Union[Tuple[Union[int, float], ...], None]) -> Optional[float]:
+    processed_args = _process_args(*args)
+    try:
+        return check_result(func, *processed_args)
+    except ValueError as e:
+        raise ValueError(f"Invalid input for {func.__name__}: {e}") from None
