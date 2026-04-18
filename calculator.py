@@ -39,5 +39,7 @@ def process_and_call(func: callable, *args: Union[Tuple[Union[int, float], ...],
 
 def process_and_call_wrapper(func: callable) -> Union[callable, None]:
     def wrapper(*args):
+        if len(args) != len(processed_args):  # Added check
+            raise ValueError("Incorrect number of arguments")
         return process_and_call(func, *args)
     return wrapper if func else None
