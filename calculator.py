@@ -32,6 +32,12 @@ def _process_args(*args: Union[Tuple[Union[int, float], ...], None]) -> Tuple[Op
 def process_and_call(func: callable, *args: Union[Tuple[Union[int, float], ...], None]) -> Optional[float]:
     processed_args = _process_args(*args)
     try:
-        return check_result(func, *processed_args)
+        result = check_result(func, *processed_args)
+        return result
     except ValueError as e:
         raise ValueError(f"Invalid input for {func.__name__}: {e}") from None
+
+def process_and_call_wrapper(func: callable) -> Union[callable, None]:
+    def wrapper(*args):
+        return process_and_call(func, *args)
+    return wrapper if func else None
