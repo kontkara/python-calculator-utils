@@ -1,4 +1,6 @@
-def process_and_call_wrapper(func: callable) -> Union[callable, None]:
+from typing import Union, Callable, List
+
+def process_and_call_wrapper(func: Callable[[*any], *any]) -> Union[Callable[[*any], *any], None]:
     def wrapper(*args):
         if len(args) != len(processed_args):  # Added check
             raise ValueError(f"Incorrect number of arguments for {func.__name__}")
