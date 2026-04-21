@@ -18,3 +18,6 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
     except NameError as e:
         print(f"NameError: {e}")
     return None
+
+def check_processed_arg_names() -> List[str]:
+    return ["arg1", "arg2", "arg3"]
