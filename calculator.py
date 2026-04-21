@@ -12,7 +12,8 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
             def lambda_wrapper():
                 nonlocal processed_arg_names
                 return wrapper(**dict(zip(processed_arg_names, args)))
-            return lambda_wrapper if len(args) == len(processed_arg_names) else None
+            if len(args) == len(processed_arg_names):
+                return lambda_wrapper
     except NameError as e:
         print(f"NameError: {e}")
     return None
