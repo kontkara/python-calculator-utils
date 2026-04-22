@@ -8,7 +8,7 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
 
     try:
         if callable(func) and func is not None:
-            processed_arg_names = tuple(arg_name for arg_name in processed_arg_names)
+            processed_arg_names = tuple(arg_name for arg_name in check_processed_arg_names())
             def lambda_wrapper(**kwargs):
                 nonlocal processed_arg_names
                 result_args = [kwargs.get(name, None) for name in processed_arg_names]
