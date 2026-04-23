@@ -21,3 +21,8 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
 
 def check_processed_arg_names() -> List[str]:
     return ["arg1", "arg2", "arg3"]
+
+try:
+    processed_args = check_processed_arg_names()
+except Exception as e:
+    print(f"Exception: {e}")
