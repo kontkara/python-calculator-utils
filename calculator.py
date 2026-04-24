@@ -17,7 +17,7 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
                 return lambda_wrapper
     except NameError as e:
         print(f"NameError: {e}")
-    return None
+    return Union[Callable[[*Any], *Any], None]
 
 def check_processed_arg_names() -> List[str]:
     return ["arg1", "arg2", "arg3"]
@@ -26,5 +26,3 @@ try:
     processed_args = check_processed_arg_names()
 except Exception as e:
     print(f"Exception: {e}")
-
-# Improvement: Type hint for the process_and_call_wrapper function's return type
