@@ -17,6 +17,14 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
                 return lambda_wrapper
     except NameError as e:
         print(f"NameError: {e}")
+
+    def check_input_types(func: Callable[[*Any], *Any]) -> None:
+        for signature in func.__code__.co_varnames[:func.__code__.co_argcount]:
+            if not isinstance(signature, str):
+                raise TypeError("Function argument name must be a string")
+
+    check_input_types(func)
+
     return Union[Callable[[*Any], *Any], None]
 
 def check_processed_arg_names() -> List[str]:
