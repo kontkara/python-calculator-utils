@@ -26,3 +26,5 @@ try:
     processed_args = check_processed_arg_names()
 except Exception as e:
     print(f"Exception: {e}")
+
+# Improvement: Type hint for the process_and_call_wrapper function's return type
