@@ -37,3 +37,6 @@ try:
     processed_args = check_processed_arg_names()
 except Exception as e:
     print(f"Exception: {e}")
+
+if not callable(func):
+    return None
