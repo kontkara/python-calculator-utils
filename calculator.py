@@ -23,7 +23,10 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
             if not isinstance(signature, str):
                 raise TypeError("Function argument name must be a string")
 
-    check_input_types(func)
+    try:
+        check_input_types(func)
+    except Exception as e:
+        print(f"Exception: {e}")
 
     return Union[Callable[[*Any], *Any], None]
 
