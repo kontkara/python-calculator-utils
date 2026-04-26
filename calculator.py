@@ -41,4 +41,7 @@ except Exception as e:
 if func is not None and not callable(func):
     raise ValueError("Non-callable value passed to process_and_call_wrapper")
 
+def get_lambda_name(func_name: str) -> str:
+    return f"{func_name}_wrapper"
+
 return Union[Callable[[*Any], *Any], None]
