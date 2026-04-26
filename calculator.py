@@ -38,5 +38,7 @@ try:
 except Exception as e:
     print(f"Exception: {e}")
 
-if not callable(func):
-    return None
+if func is not None and not callable(func):
+    raise ValueError("Non-callable value passed to process_and_call_wrapper")
+
+return Union[Callable[[*Any], *Any], None]
