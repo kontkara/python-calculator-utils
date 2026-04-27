@@ -14,7 +14,8 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
                 result_args = [kwargs.get(name, None) for name in processed_arg_names]
                 return wrapper(*result_args)
             if len(args) == len(processed_arg_names):
-                return lambda_wrapper
+                lambda_name = get_lambda_name(func.__name__)
+                return eval(f"lambda {', '.join(['{}'] * len(processed_arg_names))}: lambda_wrapper({{{' '.join(processed_arg_names)}}})")
     except NameError as e:
         print(f"NameError: {e}")
 
@@ -43,5 +44,3 @@ if func is not None and not callable(func):
 
 def get_lambda_name(func_name: str) -> str:
     return f"{func_name}_wrapper"
-
-return Union[Callable[[*Any], *Any], None]
