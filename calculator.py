@@ -15,7 +15,7 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
                 return wrapper(*result_args)
             if len(args) == len(processed_arg_names):
                 lambda_name = get_lambda_name(func.__name__)
-                return eval(f"lambda {', '.join(['{}'] * len(processed_arg_names))}: lambda_wrapper({{{' '.join(processed_arg_names)}}})")
+                return eval(f"lambda {', '.join(['{}'] * len(processed_arg_names))}: lambda_wrapper({{{' '.join(map(str, processed_arg_names))}}}"))
     except NameError as e:
         print(f"NameError: {e}")
 
@@ -32,7 +32,7 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
     except Exception as e:
         print(f"Exception: {e}")
 
-    return Union[Callable[[*Any], *Any], None]
+    return wrapper
 
 def check_processed_arg_names() -> List[str]:
     return ["arg1", "arg2", "arg3"]
