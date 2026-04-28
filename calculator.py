@@ -19,6 +19,9 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
     except NameError as e:
         print(f"NameError: {e}")
 
+    if func is not None and not callable(func):
+        raise ValueError("Non-callable value passed to process_and_call_wrapper")
+
     def check_input_types(func: Callable[[*Any], *Any]) -> None:
         for signature in func.__code__.co_varnames[:func.__code__.co_argcount]:
             if not isinstance(signature, str):
@@ -36,18 +39,6 @@ def check_processed_arg_names() -> List[str]:
 
 try:
     processed_args = check_processed_arg_names()
-except Exception as e:
-    print(f"Exception: {e}")
-
-if func is not None and not callable(func):
-    raise ValueError("Non-callable value passed to process_and_call_wrapper")
-
-def get_lambda_name(func_name: str) -> str:
-    return f"{func_name}_wrapper"
-
-try:
-    if len(processed_args) > 0:
-        check_input_types(get_lambda_name)
 except Exception as e:
     print(f"Exception: {e}")
 
