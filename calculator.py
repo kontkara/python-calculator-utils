@@ -44,3 +44,12 @@ if func is not None and not callable(func):
 
 def get_lambda_name(func_name: str) -> str:
     return f"{func_name}_wrapper"
+
+try:
+    if len(processed_args) > 0:
+        check_input_types(get_lambda_name)
+except Exception as e:
+    print(f"Exception: {e}")
+
+if __name__ == "__main__":
+    pass
