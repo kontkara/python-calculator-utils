@@ -43,4 +43,7 @@ except Exception as e:
     print(f"Exception: {e}")
 
 if __name__ == "__main__":
-    pass
+    def my_func(arg1, arg2):
+        pass
+
+print(process_and_call_wrapper(my_func))
