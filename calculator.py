@@ -50,4 +50,12 @@ if __name__ == "__main__":
 def get_lambda_name(func_name: str) -> str:
     return f"{func_name}_wrapper"
 
+def type_check(func: Callable[[*Any], *Any]) -> bool:
+    if not callable(func):
+        return False
+    for signature in func.__code__.co_varnames[:func.__code__.co_argcount]:
+        if not isinstance(signature, str):
+            return False
+    return True
+
 print(process_and_call_wrapper(my_func))
