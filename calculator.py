@@ -7,7 +7,7 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
         return func(*args) if callable(func) else None
 
     try:
-        if callable(func) and func is not None:
+        if type_check(func) and callable(func) and func is not None:
             processed_arg_names = tuple(arg_name for arg_name in check_processed_arg_names())
             def lambda_wrapper(**kwargs):
                 nonlocal processed_arg_names
@@ -23,20 +23,17 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
     if func is not None and not callable(func):
         raise ValueError("Non-callable value passed to process_and_call_wrapper")
 
-    def check_input_types(func: Callable[[*Any], *Any]) -> None:
+    return wrapper
+
+def type_check(func: Callable[[*Any], *Any]) -> bool:
+    try:
         for signature in func.__code__.co_varnames[:func.__code__.co_argcount]:
             if not isinstance(signature, str):
                 raise TypeError("Function argument name must be a string")
-
-    try:
-        check_input_types(func)
+        return True
     except Exception as e:
         print(f"Exception: {e}")
-
-    return wrapper
-
-def check_processed_arg_names() -> List[str]:
-    return ["arg1", "arg2", "arg3"]
+        return False
 
 try:
     processed_args = check_processed_arg_names()
@@ -49,13 +46,5 @@ if __name__ == "__main__":
 
 def get_lambda_name(func_name: str) -> str:
     return f"{func_name}_wrapper"
-
-def type_check(func: Callable[[*Any], *Any]) -> bool:
-    if not callable(func):
-        return False
-    for signature in func.__code__.co_varnames[:func.__code__.co_argcount]:
-        if not isinstance(signature, str):
-            return False
-    return True
 
 print(process_and_call_wrapper(my_func))
