@@ -7,16 +7,13 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
         return func(*args) if callable(func) else None
 
     try:
-        if type_check(func) and callable(func) and func is not None:
-            processed_arg_names = tuple(arg_name for arg_name in check_processed_arg_names())
-            def lambda_wrapper(**kwargs):
-                nonlocal processed_arg_names
-                result_args = [kwargs.get(name, None) for name in processed_arg_names]
-                return wrapper(*result_args)
+        if isinstance(func, str):
+            lambda_name = get_lambda_name(func)
+            return eval(lambda_name + f" = lambda {', '.join(['{}'] * len(processed_args))}: wrapper({{{' '.join(map(str, processed_arg_names))}}}{' ,': len(processed_arg_names)-1})")
+        elif type_check(func) and callable(func):
+            # added: processing arguments if all conditions met
             if len(args) == len(processed_arg_names):
-                lambda_name = get_lambda_name(func.__name__)
-                return eval(f"lambda {', '.join(['{}'] * len(processed_arg_names))}: lambda_wrapper({{{' '.join(map(str, processed_arg_names))}}}{' ,': len(processed_arg_names)-1})")
-
+                return eval(f"lambda {', '.join(['{}'] * len(processed_args))}: wrapper({{{' '.join(map(str, processed_arg_names))}}}{' ,': len(processed_arg_names)-1})")
     except NameError as e:
         print(f"NameError: {e}")
 
