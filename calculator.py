@@ -43,11 +43,11 @@ try:
 except Exception as e:
     print(f"Exception: {e}")
 
+def get_lambda_name(func_name: str) -> str:
+    return f"{func_name}_wrapper"
+
 if __name__ == "__main__":
     def my_func(arg1, arg2):
         pass
-
-def get_lambda_name(func_name: str) -> str:
-    return f"{func_name}_wrapper"
 
 print(process_and_call_wrapper(my_func))
