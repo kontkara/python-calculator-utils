@@ -11,7 +11,7 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
             lambda_name = get_lambda_name(func)
             wrapped_func = eval(lambda_name + f" = lambda {', '.join(['{}'] * len(processed_arg_names))}: wrapper({{{' '.join(map(str, processed_arg_names))}}}{' ,': len(processed_arg_names)-1})")
             return wrapped_func if callable(wrapped_func) else None
-        elif isinstance(func, dict):  # added type hint
+        elif isinstance(func, dict):  
             func: Dict[str, Any]
             if all(isinstance(key, str) for key in func.keys()):
                 return eval(f"lambda {', '.join(['{}'] * len(func.keys()))}: wrapper({{{' '.join(map(str, func.keys()))}}}{' ,': len(func.keys())-1})")
@@ -61,5 +61,11 @@ def check_func_args(func: Callable[[*Any], *Any]) -> bool:
 if __name__ == "__main__":
     def my_func(arg1, arg2):
         pass
+
+try:
+    if not check_func_args(my_func):
+        raise ValueError("Incorrect number of function arguments")
+except Exception as e:
+    print(f"Exception: {e}")
 
 print(process_and_call_wrapper(my_func))
