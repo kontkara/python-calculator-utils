@@ -17,7 +17,7 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
                 return eval(f"lambda {', '.join(['{}'] * len(func.keys()))}: wrapper({{{' '.join(map(str, func.keys()))}}}{' ,': len(func.keys())-1})")
         elif callable(func):
             if len(args) == len(processed_arg_names):
-                return eval(f"lambda {', '.join(['{}'] * len(processd_args))}: wrapper({{{' '.join(map(str, processed_arg_names))}}}{' ,': len(processed_arg_names)-1})")
+                return eval(f"lambda {', '.join(['{}'] * len(processed_args))}: wrapper({{{' '.join(map(str, processed_arg_names))}}}{' ,': len(processed_arg_names)-1})")
     except NameError as e:
         print(f"NameError: {e}")
 
@@ -48,6 +48,15 @@ def get_lambda_name(func_name: str) -> str:
     if not is_valid_lambda_name(func_name):
         raise ValueError("Invalid lambda name")
     return f"{func_name}_wrapper"
+
+def check_func_args(func: Callable[[*Any], *Any]) -> bool:
+    try:
+        if len(func.__code__.co_varnames[:func.__code__.co_argcount]) != len(processed_args):
+            raise ValueError(f"Incorrect number of function arguments")
+        return True
+    except Exception as e:
+        print(f"Exception: {e}")
+        return False
 
 if __name__ == "__main__":
     def my_func(arg1, arg2):
