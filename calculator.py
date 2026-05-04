@@ -14,7 +14,7 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
         elif isinstance(func, dict):  
             func: Dict[str, Any]
             if all(isinstance(key, str) for key in func.keys()):
-                return eval(f"lambda {', '.join(['{}'] * len(func.keys()))}: wrapper({{{' '.join(map(str, func.keys()))}}}{' ,': len(func.keys())-1})")
+                return eval(f"lambda {', '.join(['{}'] * len(func.keys()))}: wrapper({{{' '.join(map(str, list(func.keys())))}}}{' ,': len(func.keys())-1})")
         elif callable(func):
             if len(args) == len(processed_arg_names):
                 return eval(f"lambda {', '.join(['{}'] * len(processed_args))}: wrapper({{{' '.join(map(str, processed_arg_names))}}}{' ,': len(processed_arg_names)-1})")
@@ -58,13 +58,22 @@ def check_func_args(func: Callable[[*Any], *Any]) -> bool:
         print(f"Exception: {e}")
         return False
 
+def check_wrapper(func: Callable[[*Any], *Any]) -> bool:
+    try:
+        if not callable(func) or len(processed_args) != len(func.__code__.co_varnames[:func.__code__.co_argcount]):
+            raise ValueError("Invalid wrapper function")
+        return True
+    except Exception as e:
+        print(f"Exception: {e}")
+        return False
+
 if __name__ == "__main__":
     def my_func(arg1, arg2):
         pass
 
 try:
-    if not check_func_args(my_func):
-        raise ValueError("Incorrect number of function arguments")
+    if not check_func_args(my_func) or not check_wrapper(my_func):
+        raise ValueError("Invalid function")
 except Exception as e:
     print(f"Exception: {e}")
 
