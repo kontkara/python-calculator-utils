@@ -87,4 +87,4 @@ try:
 except Exception as e:
     print(f"Exception: {e}")
 
-print(process_and_call_wrapper(my_func))
+print(type(process_and_call_wrapper(my_func)))
