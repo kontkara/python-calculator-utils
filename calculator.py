@@ -9,15 +9,15 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
     try:
         if isinstance(func, str):
             lambda_name = get_lambda_name(func)
-            wrapped_func = eval(lambda_name + f" = lambda {', '.join(['{}'] * len(processed_arg_names))}: wrapper({{{' '.join(map(str, processed_arg_names))}}}{' ,': len(processed_arg_names)-1})")
+            wrapped_func = eval(lambda_name + f" = lambda {' ,'.join(['{}'] * len(processed_arg_names))}: wrapper({{{' '.join(map(str, processed_arg_names))}}}{' ,': len(processed_arg_names)-1})")
             return wrapped_func if callable(wrapped_func) else None
         elif isinstance(func, dict):  
             func: Dict[str, Any]
             if all(isinstance(key, str) for key in func.keys()):
-                return eval(f"lambda {', '.join(['{}'] * len(func.keys()))}: wrapper({{{' '.join(map(str, list(func.keys())))}}}{' ,': len(func.keys())-1})")
+                return eval(f"lambda {' ,'.join(['{}'] * len(func.keys()))}: wrapper({{{' '.join(map(str, list(func.keys())))}}}{' ,': len(func.keys())-1})")
         elif callable(func):
             if len(args) == len(processed_arg_names):
-                return eval(f"lambda {', '.join(['{}'] * len(processed_args))}: wrapper({{{' '.join(map(str, processed_arg_names))}}}{' ,': len(processed_arg_names)-1})")
+                return eval(f"lambda {' ,'.join(['{}'] * len(processed_args))}: wrapper({{{' '.join(map(str, processed_arg_names))}}}{' ,': len(processed_arg_names)-1})")
     except NameError as e:
         print(f"NameError: {e}")
 
@@ -67,12 +67,22 @@ def check_wrapper(func: Callable[[*Any], *Any]) -> bool:
         print(f"Exception: {e}")
         return False
 
+def type_check_arg_names(arg_names: List[str]) -> bool:
+    try:
+        for arg_name in arg_names:
+            if not isinstance(arg_name, str):
+                raise TypeError("Argument name must be a string")
+        return True
+    except Exception as e:
+        print(f"Exception: {e}")
+        return False
+
 if __name__ == "__main__":
     def my_func(arg1, arg2):
         pass
 
 try:
-    if not check_func_args(my_func) or not check_wrapper(my_func):
+    if not check_func_args(my_func) or not check_wrapper(my_func) or not type_check_arg_names(processed_args):
         raise ValueError("Invalid function")
 except Exception as e:
     print(f"Exception: {e}")
