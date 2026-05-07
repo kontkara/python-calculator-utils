@@ -78,8 +78,19 @@ def type_check_arg_names(arg_names: List[str]) -> bool:
         return False
 
 if __name__ == "__main__":
-    def my_func(arg1, arg2):
+    def my_func(arg1: int, arg2: float) -> bool:
         pass
+
+def type_check_types(func: Callable[[*Any], *Any]) -> bool:
+    try:
+        for signature in func.__code__.co_varnames[:func.__code__.co_argcount]:
+            if not isinstance(signature, str):
+                raise TypeError("Function argument name must be a string")
+            arg_type = eval(f"inspect.getargtypes(func)['{signature}']")
+            return True
+    except Exception as e:
+        print(f"Exception: {e}")
+        return False
 
 try:
     if not check_func_args(my_func) or not check_wrapper(my_func) or not type_check_arg_names(processed_args):
