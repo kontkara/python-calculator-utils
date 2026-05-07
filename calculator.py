@@ -1,5 +1,3 @@
-from typing import Union, Callable, List, Any, Dict
-
 def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*Any], *Any], None]:
     def wrapper(*args):
         if len(args) != len(processed_args):  
@@ -10,7 +8,9 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
         if isinstance(func, str):
             lambda_name = get_lambda_name(func)
             wrapped_func = eval(lambda_name + f" = lambda {' ,'.join(['{}'] * len(processed_arg_names))}: wrapper({{{' '.join(map(str, processed_arg_names))}}}{' ,': len(processed_arg_names)-1})")
-            return wrapped_func if callable(wrapped_func) else None
+            if not isinstance(wrapped_func, (Callable, type(None))):
+                raise TypeError("Wrapped function must be callable or None")
+            return wrapped_func
         elif isinstance(func, dict):  
             func: Dict[str, Any]
             if all(isinstance(key, str) for key in func.keys()):
@@ -25,77 +25,3 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
         raise ValueError("Non-callable value passed to process_and_call_wrapper")
 
     return wrapper
-
-def type_check(func: Callable[[*Any], *Any]) -> bool:
-    try:
-        for signature in func.__code__.co_varnames[:func.__code__.co_argcount]:
-            if not isinstance(signature, str):
-                raise TypeError("Function argument name must be a string")
-        return True
-    except Exception as e:
-        print(f"Exception: {e}")
-        return False
-
-def is_valid_lambda_name(func_name: str) -> bool:
-    return all(char.isalnum() or char.isspace() for char in func_name)
-
-try:
-    processed_args = check_processed_arg_names()
-except Exception as e:
-    print(f"Exception: {e}")
-
-def get_lambda_name(func_name: str) -> str:
-    if not is_valid_lambda_name(func_name):
-        raise ValueError("Invalid lambda name")
-    return f"{func_name}_wrapper"
-
-def check_func_args(func: Callable[[*Any], *Any]) -> bool:
-    try:
-        if len(func.__code__.co_varnames[:func.__code__.co_argcount]) != len(processed_args):
-            raise ValueError(f"Incorrect number of function arguments")
-        return True
-    except Exception as e:
-        print(f"Exception: {e}")
-        return False
-
-def check_wrapper(func: Callable[[*Any], *Any]) -> bool:
-    try:
-        if not callable(func) or len(processed_args) != len(func.__code__.co_varnames[:func.__code__.co_argcount]):
-            raise ValueError("Invalid wrapper function")
-        return True
-    except Exception as e:
-        print(f"Exception: {e}")
-        return False
-
-def type_check_arg_names(arg_names: List[str]) -> bool:
-    try:
-        for arg_name in arg_names:
-            if not isinstance(arg_name, str):
-                raise TypeError("Argument name must be a string")
-        return True
-    except Exception as e:
-        print(f"Exception: {e}")
-        return False
-
-if __name__ == "__main__":
-    def my_func(arg1: int, arg2: float) -> bool:
-        pass
-
-def type_check_types(func: Callable[[*Any], *Any]) -> bool:
-    try:
-        for signature in func.__code__.co_varnames[:func.__code__.co_argcount]:
-            if not isinstance(signature, str):
-                raise TypeError("Function argument name must be a string")
-            arg_type = eval(f"inspect.getargtypes(func)['{signature}']")
-            return True
-    except Exception as e:
-        print(f"Exception: {e}")
-        return False
-
-try:
-    if not check_func_args(my_func) or not check_wrapper(my_func) or not type_check_arg_names(processed_args):
-        raise ValueError("Invalid function")
-except Exception as e:
-    print(f"Exception: {e}")
-
-print(type(process_and_call_wrapper(my_func)))
