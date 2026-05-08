@@ -10,4 +10,5 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
             wrapped_func = eval(lambda_name + f" = lambda {' ,'.join(['{}'] * len(processed_arg_names))}: wrapper({{{' '.join(map(str, processed_arg_names))}}}{' ,': len(processed_arg_names)-1})")
         except Exception as e:
             print(f"Error evaluating {lambda_name}: {e}")
-    # ... rest of the code remains the same ...
+            raise
+    return wrapper
