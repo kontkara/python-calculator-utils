@@ -7,7 +7,7 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
     if isinstance(func, str):
         lambda_name = get_lambda_name(func)
         try:
-            wrapped_func = eval(lambda_name + f" = lambda {' ,'.join(['{}'] * len(processed_arg_names))}: wrapper({{{' '.join(map(str, processed_arg_names))}}}{' ,': len(processed_arg_names)-1})")
+            wrapped_func = eval(lambda_name + f" = lambda *processed_arg_names: wrapper({{', '.join(map(str, processed_arg_names))}})")
         except Exception as e:
             print(f"Error evaluating {lambda_name}: {e}")
             raise
