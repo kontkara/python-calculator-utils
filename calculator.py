@@ -11,13 +11,9 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
         except Exception as e:
             print(f"Error evaluating {lambda_name}: {e}")
             raise
+    elif callable(func):
+        wrapped_func = func(*processed_args)
     else:
-        if callable(func):
-            try:
-                wrapped_func = func(*processed_args)
-            except TypeError as e:
-                raise ValueError(f"Invalid function call for {func.__name__}: {e}")
-        else:
-            return None
+        return None
 
     return wrapper
