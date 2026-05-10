@@ -4,13 +4,15 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
             raise ValueError(f"Incorrect number of arguments for {func.__name__}")
         return func(*args) if callable(func) else None
 
-    if isinstance(func, str):
-        lambda_name = get_lambda_name(func)
+    def safe_eval(lambda_name: str) -> Union[Callable[[*Any], *Any], None]:
         try:
-            wrapped_func = eval(lambda_name + f" = lambda *processed_arg_names: wrapper({{', '.join(map(str, processed_arg_names))}})")
+            return eval(lambda_name + f" = lambda *processed_arg_names: wrapper({{', '.join(map(str, processed_arg_names))}})")
         except Exception as e:
             print(f"Error evaluating {lambda_name}: {e}")
-            raise
+            return None
+
+    if isinstance(func, str):
+        wrapped_func = safe_eval(get_lambda_name(func))
     elif callable(func):
         wrapped_func = func(*processed_args)
     else:
