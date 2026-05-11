@@ -6,7 +6,8 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
 
     def safe_eval(lambda_name: str) -> Union[Callable[[*Any], *Any], None]:
         try:
-            return eval(lambda_name + f" = lambda *processed_arg_names: wrapper({{', '.join(map(str, processed_arg_names))}})")
+            result = eval(lambda_name + f" = lambda *processed_arg_names: wrapper({{', '.join(map(str, processed_arg_names))}})")
+            return result if isinstance(result, type(wrapper)) else None
         except Exception as e:
             print(f"Error evaluating {lambda_name}: {e}")
             return None
