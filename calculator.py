@@ -25,4 +25,7 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
     else:
         return None
 
-    return wrapper
+    if callable(wrapped_func):
+        return wrapped_func
+    else:
+        return None
