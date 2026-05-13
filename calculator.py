@@ -12,13 +12,16 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
             print(f"Error evaluating {lambda_name}: {e}")
             return None
 
+    def validate_return_type(result):
+        if not isinstance(result, (int, bool)):
+            raise ValueError(f"Invalid return type for {func.__name__}. Expected int or bool.")
+
     if isinstance(func, str):
         wrapped_func = safe_eval(get_lambda_name(func))
     elif callable(func):
         try:
             result = func(*processed_args)
-            if not isinstance(result, (int, bool)):
-                raise ValueError(f"Invalid return type for {func.__name__}. Expected int or bool.")
+            validate_return_type(result)
             wrapped_func = lambda *args: wrapper(*args) if len(args) == len(processed_args) else None
         except TypeError as e:
             raise ValueError(f"Incorrect type of arguments for {func.__name__}") from e
