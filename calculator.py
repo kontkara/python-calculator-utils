@@ -28,7 +28,8 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
     else:
         return None
 
-    if callable(wrapped_func):
-        return wrapped_func
-    else:
-        return None
+    # Improved error handling for the case when wrapped_func is not callable
+    if not callable(wrapped_func):
+        raise ValueError(f"Wrapped function {wrapped_func} is not callable")
+
+    return wrapped_func
