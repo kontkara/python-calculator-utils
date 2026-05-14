@@ -34,3 +34,6 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
 
     # Add type hinting for the returned value
     return cast(Union[Callable[[*Any], *Any], None], wrapped_func)
+
+    if func.__name__.startswith('__'):  # improvement: exclude built-in functions
+        return None
