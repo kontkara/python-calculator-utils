@@ -22,7 +22,7 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
         try:
             result = func(*processed_args)
             validate_return_type(result)
-            wrapped_func = lambda *args: wrapper(*args) if len(args) == len(processed_args) else None
+            wrapped_func = lambda *args: wrapper(*args) if len(args) == len(processed_arg_names) else None
         except TypeError as e:
             raise ValueError(f"Incorrect type of arguments for {func.__name__}") from e
     else:
@@ -32,4 +32,5 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
     if not callable(wrapped_func):
         raise ValueError(f"Wrapped function {wrapped_func} is not callable")
 
-    return wrapped_func
+    # Add type hinting for the returned value
+    return cast(Union[Callable[[*Any], *Any], None], wrapped_func)
