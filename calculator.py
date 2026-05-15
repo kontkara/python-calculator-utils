@@ -2,7 +2,7 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
     ...
     if isinstance(func, str):
         wrapped_func = safe_eval(get_lambda_name(func))
-    elif callable(func):
+    elif callable(func) and not check_builtin(func):  # added check for built-ins
         try:
             result = func(*processed_args)
             validate_return_type(result)
