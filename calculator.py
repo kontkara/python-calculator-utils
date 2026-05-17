@@ -13,3 +13,7 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
             raise ValueError(f"Incorrect type of arguments for {func.__name__}") from e
     else:
         return None
+
+    if wrapped_func is not None and callable(wrapped_func):
+        return wrap_with_logging(wrapped_func)
+    return wrapped_func
