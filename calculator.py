@@ -15,5 +15,8 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
         return None
 
     if wrapped_func is not None and callable(wrapped_func):
-        return wrap_with_logging(wrapped_func)
+        def with_logging(*args, **kwargs):
+            logging.info("Calling function")
+            return wrapped_func(*args, **kwargs)
+        return wrap_with_logging(with_logging)
     return wrapped_func
