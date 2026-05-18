@@ -22,6 +22,17 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
 
     # New addition: Check for `None` values in the processed_args
     if processed_args is not None:
-        processed_args = tuple(arg if isinstance(arg, tuple) else (arg,) for arg in processed_args)
+        processed_args = tuple(arg if isinstance(arg, tuple) else (arg,) for arg in process_and_check_for_none(processed_args))
 
     return wrapped_func
+
+def process_and_check_for_none(args):
+    result = []
+    for arg in args:
+        if arg is None:
+            raise ValueError(f"None value found in arguments")
+        elif isinstance(arg, tuple):
+            result.append(tuple(process_and_check_for_none(item) for item in arg))
+        else:
+            result.append(arg)
+    return tuple(result)
