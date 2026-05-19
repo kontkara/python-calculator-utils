@@ -18,12 +18,11 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
         def with_logging(*args, **kwargs):
             logging.info("Calling function")
             return wrapped_func(*args, **kwargs)
-        return wrap_with_logging(with_logging)
+        return typing.cast(Union[Callable[[*Any], *Any], None], wrap_with_logging(with_logging))
 
     if processed_args is not None:
         processed_args = tuple(arg if isinstance(arg, tuple) else (arg,) for arg in process_and_check_for_none(tuple(map(lambda x: x if x is not None else (), processed_args))))
     
-    # New addition: Type hint for the return value
     return typing.cast(Union[Callable[[*Any], *Any], None], wrapped_func)
 
 def process_and_check_for_none(args):
@@ -35,4 +34,4 @@ def process_and_check_for_none(args):
             result.append(tuple(process_and_check_for_none(item) for item in arg))
         else:
             result.append(arg)
-    return tuple(result)
+    return typing.cast(tuple, tuple(result))
