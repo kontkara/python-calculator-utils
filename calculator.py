@@ -22,3 +22,10 @@ def process_and_check_for_none(args):
             else:
                 result.append(tuple((arg,)))
     return typing.cast(tuple, tuple(result))
+
+def is_valid_input_type(input_types: Union[Type, Tuple[Type, ...]]) -> callable[[*Any], *Any]:
+    def validate_args(*args):
+        if not all(isinstance(arg, input_types) for arg in args):
+            raise ValueError("Invalid argument types")
+        return True
+    return validate_args
