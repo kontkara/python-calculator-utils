@@ -28,4 +28,4 @@ def is_valid_input_type(input_types: Union[Type, Tuple[Type, ...]]) -> callable[
         if not all(isinstance(arg, input_types) for arg in args):
             raise ValueError("Invalid argument types")
         return True
-    return validate_args
+    return typing.cast(tuple, tuple(map(validate_args, *input_types)))
