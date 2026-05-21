@@ -9,31 +9,5 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
             raise ValueError(f"Incorrect type of arguments for {func.__name__}") from e
     ...
 
-def process_and_check_for_none(args):
-    result = []
-    for arg in args:
-        if arg is None:
-            raise ValueError(f"None value found in arguments")
-        elif isinstance(arg, tuple):
-            result.append(tuple(process_and_check_for_none(item) for item in arg))
-        else:
-            if isinstance(arg, (int, str)):
-                result.append(arg)
-            else:
-                result.append(tuple((arg,)))
-    return typing.cast(tuple, tuple(result))
-
-def is_valid_input_type(input_types: Union[Type, Tuple[Type, ...]]) -> callable[[*Any], *Any]:
-    def validate_args(*args):
-        if not all(isinstance(arg, input_types) for arg in args):
-            raise ValueError("Invalid argument types")
-        return True
-    return typing.cast(tuple, tuple(map(validate_args, *input_types)))
-
-def is_valid_input_type_wrapper(input_types: Union[Type, Tuple[Type, ...]]) -> Callable[[*Any], bool]:
-    def wrapper(*args):
-        try:
-            return all(isinstance(arg, input_types) for arg in args)
-        except TypeError as e:
-            raise ValueError("Invalid argument types") from e
-    return typing.cast(Union[Callable[[*Any], bool], None], wrapper)
+def process_and_call_wrapper_with_hint(func: Callable[[*Any], *Any]) -> Union[Callable[[*Any], *Any], None]:
+    return typing.cast(Union[Callable[[*Any], *Any], None], process_and_call_wrapper(func))
