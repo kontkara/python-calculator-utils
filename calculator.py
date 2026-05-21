@@ -36,4 +36,4 @@ def is_valid_input_type_wrapper(input_types: Union[Type, Tuple[Type, ...]]) -> C
             return all(isinstance(arg, input_types) for arg in args)
         except TypeError as e:
             raise ValueError("Invalid argument types") from e
-    return wrapper
+    return typing.cast(Union[Callable[[*Any], bool], None], wrapper)
