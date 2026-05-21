@@ -1,8 +1,7 @@
 from typing import Any, Callable, Union
 
 def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*Any], *Any], None]:
-    ...
-    if callable(func) and not check_builtin(func):  
+    if callable(func):
         try:
             result = func(*processed_args)
             validate_return_type(result)
