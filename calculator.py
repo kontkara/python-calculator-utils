@@ -12,3 +12,10 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
 
 def process_and_call_wrapper_with_hint(func: Callable[[*Any], *Any]) -> Union[Callable[[*Any], *Any], None]:
     return process_and_call_wrapper(func)
+
+def wrapper(*args):
+    if len(args) == len(processed_arg_names):
+        for arg, name in zip(args, processed_arg_names):
+            # Add this line
+            assert isinstance(arg, type(getattr(__package__, name))), f"Invalid type for {name}"
+    return func(*args)
