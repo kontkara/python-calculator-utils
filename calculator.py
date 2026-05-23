@@ -19,3 +19,6 @@ def wrapper(*args):
             assert isinstance(arg, type(getattr(__package__, name))), f"Invalid type for {name}"
             assert hasattr(arg, '__dict__', 'Object {} is not an instance of a class'.format(name))
     return func(*args)
+
+def get_processed_args_and_names() -> tuple:
+    return processed_args, processed_arg_names
