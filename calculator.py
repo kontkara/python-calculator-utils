@@ -29,3 +29,7 @@ def get_processed_args_and_names() -> Tuple[Any, ...]:
 def _validate_processable(func: Callable[[*Any], *Any]) -> None:
     if not callable(func):
         raise ValueError(f"{func} is not a function")
+
+def validate_return_type(result: Any) -> None:
+    if not isinstance(result, tuple):
+        raise ValueError("Return type must be a tuple")
