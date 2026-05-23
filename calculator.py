@@ -1,4 +1,7 @@
-from typing import Any, Callable, Union
+from typing import Any, Callable, Union, Tuple
+
+processed_args: Any
+processed_arg_names: Tuple[Any, ...]
 
 def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*Any], *Any], None]:
     if callable(func):
@@ -20,5 +23,5 @@ def wrapper(*args):
             assert hasattr(arg, '__dict__', 'Object {} is not an instance of a class'.format(name))
     return func(*args)
 
-def get_processed_args_and_names() -> tuple:
+def get_processed_args_and_names() -> Tuple[Any, ...]:
     return processed_args, processed_arg_names
