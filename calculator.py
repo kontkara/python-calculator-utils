@@ -25,3 +25,7 @@ def wrapper(*args):
 
 def get_processed_args_and_names() -> Tuple[Any, ...]:
     return processed_args, processed_arg_names
+
+def _validate_processable(func: Callable[[*Any], *Any]) -> None:
+    if not callable(func):
+        raise ValueError(f"{func} is not a function")
