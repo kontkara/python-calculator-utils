@@ -5,6 +5,7 @@ processed_arg_names: Tuple[Any, ...]
 
 def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*Any], *Any], None]:
     if callable(func):
+        _validate_processable(func)  # Added helper function call
         try:
             result = func(*processed_args)
             validate_return_type(result)
