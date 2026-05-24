@@ -40,4 +40,18 @@ def _check_args_and_names() -> None:
         if len(processed_arg_names) != len(processed_args):
             raise ValueError('processed_args and processed_arg_names should have the same length')
 
+def _init_processed_args_and_names() -> None:
+    global processed_args, processed_arg_names
+    if not any([var is not None for var in [processed_args, processed_arg_names]]):
+        raise ValueError("processed_args and processed_arg_names must be initialized before calling this function")
+
+_init_checked = False
+
+def check_initialized() -> None:
+    nonlocal _init_checked
+    if not _init_checked:
+        _check_args_and_names()
+        _init_checked = True
+
 _check_args_and_names()
+_init_checked = True
