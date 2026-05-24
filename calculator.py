@@ -5,7 +5,7 @@ processed_arg_names: Tuple[Any, ...]
 
 def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*Any], *Any], None]:
     if callable(func):
-        _validate_processable(func)  # Added helper function call
+        _validate_processable(func)
         try:
             result = func(*processed_args)
             validate_return_type(result)
@@ -34,3 +34,10 @@ def _validate_processable(func: Callable[[*Any], *Any]) -> None:
 def validate_return_type(result: Any) -> None:
     if not isinstance(result, tuple):
         raise ValueError("Return type must be a tuple")
+
+def _check_args_and_names() -> None:
+    if processed_arg_names and processed_args:
+        if len(processed_arg_names) != len(processed_args):
+            raise ValueError('processed_args and processed_arg_names should have the same length')
+
+_check_args_and_names()
