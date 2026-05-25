@@ -15,6 +15,7 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
     return wrapped_func
 
 def process_and_call_wrapper_with_hint(func: Callable[[*Any], *Any]) -> Union[Callable[[*Any], *Any], None]:
+    check_initialized()
     return process_and_call_wrapper(func)
 
 def wrapper(*args):
