@@ -65,3 +65,7 @@ validate_processed_data()
 
 def __get_func_name(func: Callable[[*Any], *Any]) -> str:
     return func.__name__
+
+def check_inputs(func: Callable[[*Any], *Any]) -> None:
+    if not callable(func):
+        raise ValueError(f"{func} is not a function")
