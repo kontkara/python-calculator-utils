@@ -62,3 +62,6 @@ def validate_processed_data() -> None:
     _check_args_and_names()
 
 validate_processed_data()
+
+def __get_func_name(func: Callable[[*Any], *Any]) -> str:
+    return func.__name__
