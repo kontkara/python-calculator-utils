@@ -57,3 +57,8 @@ def check_initialized() -> None:
 
 _check_args_and_names()
 _init_checked = True
+
+def validate_processed_data() -> None:
+    _check_args_and_names()
+
+validate_processed_data()
