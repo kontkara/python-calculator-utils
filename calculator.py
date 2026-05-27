@@ -69,3 +69,8 @@ def __get_func_name(func: Callable[[*Any], *Any]) -> str:
 def check_inputs(func: Callable[[*Any], *Any]) -> None:
     if not callable(func):
         raise ValueError(f"{func} is not a function")
+
+def process_and_call_wrapper_with_hint(func: Callable[[Tuple[Any, ...]], Tuple[Any, ...]]) -> Union[Callable[[Tuple[Any, ...]], Tuple[Any, ...]], None]:
+    if not _init_checked:
+        check_initialized()
+    return process_and_call_wrapper(func)
