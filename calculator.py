@@ -74,3 +74,18 @@ def process_and_call_wrapper_with_hint(func: Callable[[Tuple[Any, ...]], Tuple[A
     if not _init_checked:
         check_initialized()
     return process_and_call_wrapper(func)
+
+def _process_args_and_names() -> Tuple[Any, ...]:
+    try:
+        if processed_arg_names and processed_args:
+            if len(processed_arg_names) != len(processed_args):
+                raise ValueError('processed_args and processed_arg_names should have the same length')
+    except Exception as e:
+        raise ValueError("Error processing args and names: {}".format(str(e)))
+
+def wrapper(*args):
+    if len(args) == len(processed_arg_names):
+        for arg, name in zip(args, processed_arg_names):
+            assert isinstance(arg, type(getattr(__package__, name))), f"Invalid type for {name}"
+            assert hasattr(arg, '__dict__', 'Object {} is not an instance of a class'.format(name))
+    return func(*args)
