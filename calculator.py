@@ -99,3 +99,9 @@ def _check_processed_args_and_names() -> None:
         raise ValueError("Error processing args and names: {}".format(str(e)))
 
 _init_processed_args_and_names()
+
+def _check_types() -> None:
+    if not isinstance(processed_args, tuple) or not isinstance(processed_arg_names, tuple):
+        raise TypeError("processed_args and processed_arg_names must be tuples")
+
+_check_types()
