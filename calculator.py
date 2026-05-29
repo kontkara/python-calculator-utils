@@ -1,10 +1,11 @@
 from typing import Any, Callable, Union, Tuple
 
-def get_func_name(func: Callable[[*Any], *Any]) -> str:
-    return func.__name__ if callable(func) else "Unknown"
-
 processed_args: Any
 processed_arg_names: Tuple[Any, ...]
+_init_checked = False  # added this variable for process_and_call_wrapper_with_hint to check initialization
+
+def get_func_name(func: Callable[[*Any], *Any]) -> str:
+    return func.__name__ if callable(func) else "Unknown"
 
 def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*Any], *Any], None]:
     if callable(func):
@@ -32,3 +33,7 @@ def wrapper(*args: Tuple[Any, ...]) -> Any:
 def _validate_processable(func: Callable[[*Any], *Any]) -> None:
     if not isinstance(func, (Callable, type)):
         raise TypeError(f"Invalid function {func}")
+
+def check_initialized() -> None:
+    global _init_checked
+    _init_checked = True
