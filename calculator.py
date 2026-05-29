@@ -26,4 +26,9 @@ def validate_processed_args() -> None:
     if processed_arg_names and processed_args and len(processed_arg_names) != len(processed_args):
         raise ValueError("processed_args and processed_arg_names must have the same length")
 
-# ... rest of the code ...
+def wrapper(*args: Tuple[Any, ...]) -> Any:
+    return args
+
+def _validate_processable(func: Callable[[*Any], *Any]) -> None:
+    if not isinstance(func, (Callable, type)):
+        raise TypeError(f"Invalid function {func}")
