@@ -22,4 +22,8 @@ def process_and_call_wrapper_with_hint(func: Callable[[Tuple[Any, ...]], Tuple[A
         check_initialized()
     return process_and_call_wrapper(func)
 
+def validate_processed_args() -> None:
+    if processed_arg_names and processed_args and len(processed_arg_names) != len(processed_args):
+        raise ValueError("processed_args and processed_arg_names must have the same length")
+
 # ... rest of the code ...
