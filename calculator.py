@@ -1,8 +1,10 @@
-from typing import Any, Callable, Union, Tuple
+from typing import Any, Callable, Union, Tuple, Dict
 
 processed_args: Any
 processed_arg_names: Tuple[Any, ...]
 _init_checked = False  # added this variable for process_and_call_wrapper_with_hint to check initialization
+
+func_metadata: Dict[str, str] = {}  # new metadata dictionary for function info
 
 def get_func_name(func: Callable[[*Any], *Any]) -> str:
     return func.__name__ if callable(func) else "Unknown"
