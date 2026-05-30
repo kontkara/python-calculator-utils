@@ -37,3 +37,7 @@ def _validate_processable(func: Callable[[*Any], *Any]) -> None:
 def check_initialized() -> None:
     global _init_checked
     _init_checked = True
+
+def validate_return_type(result: Any) -> None:
+    if result is not None and not isinstance(result, tuple):
+        raise ValueError(f"Unexpected return type for {get_func_name(func)}")
