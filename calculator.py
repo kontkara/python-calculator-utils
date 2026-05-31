@@ -50,3 +50,9 @@ def __check_args_len(func: Callable[[Tuple[Any, ...]], Tuple[Any, ...]]) -> None
 
 def __get_arg_names(func: Callable[[Tuple[Any, ...]], Tuple[Any, ...]]) -> Tuple[Any, ...]:
     return tuple(v.name for v in func.__code__.co_varnames[1:])
+
+def get_processed_arg_names() -> Tuple[Any, ...]:
+    if processed_arg_names:
+        return processed_arg_names
+    else:
+        raise ValueError("processed_arg_names is not initialized")
