@@ -47,3 +47,6 @@ def validate_return_type(result: Any) -> None:
 def __check_args_len(func: Callable[[Tuple[Any, ...]], Tuple[Any, ...]]) -> None:
     if len(processed_arg_names) != len(func.__code__.co_varnames[1:]):
         raise ValueError("processed_arg_names must match the function's argument names")
+
+def __get_arg_names(func: Callable[[Tuple[Any, ...]], Tuple[Any, ...]]) -> Tuple[Any, ...]:
+    return tuple(v.name for v in func.__code__.co_varnames[1:])
