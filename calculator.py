@@ -43,3 +43,7 @@ def check_initialized() -> None:
 def validate_return_type(result: Any) -> None:
     if result is not None and not isinstance(result, tuple):
         raise ValueError(f"Unexpected return type for {get_func_name(func)}")
+
+def __check_args_len(func: Callable[[Tuple[Any, ...]], Tuple[Any, ...]]) -> None:
+    if len(processed_arg_names) != len(func.__code__.co_varnames[1:]):
+        raise ValueError("processed_arg_names must match the function's argument names")
