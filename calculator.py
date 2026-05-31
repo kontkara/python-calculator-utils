@@ -57,3 +57,7 @@ def get_processed_arg_names() -> Tuple[Any, ...]:
         return processed_arg_names
     else:
         raise ValueError("processed_arg_names is not initialized")
+
+def __set_processed_arg_names(func: Callable[[Tuple[Any, ...]], Tuple[Any, ...]]) -> None:
+    global processed_arg_names
+    processed_arg_names = __get_arg_names(func)
