@@ -64,3 +64,9 @@ def __set_processed_arg_names(func: Callable[[Tuple[Any, ...]], Tuple[Any, ...]]
 
 def get_func_arg_names(func: Callable[[*Any], *Any]) -> Tuple[Any, ...]:
     return tuple(arg.name for arg in func.__code__.co_varnames[1:])
+
+def __validate_input(func: Callable[[Tuple[Any, ...]], Tuple[Any, ...]]) -> None:
+    if not callable(func):
+        raise TypeError(f"{func} is not a valid function")
+
+process_and_call_wrapper = functools.partial(process_and_call_wrapper, validate_processed_args)
