@@ -61,3 +61,6 @@ def get_processed_arg_names() -> Tuple[Any, ...]:
 def __set_processed_arg_names(func: Callable[[Tuple[Any, ...]], Tuple[Any, ...]]) -> None:
     global processed_arg_names
     processed_arg_names = __get_arg_names(func)
+
+def get_func_arg_names(func: Callable[[*Any], *Any]) -> Tuple[Any, ...]:
+    return tuple(arg.name for arg in func.__code__.co_varnames[1:])
