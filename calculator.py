@@ -23,7 +23,7 @@ def process_and_call_wrapper(func: Callable[[*Any], *Any]) -> Union[Callable[[*A
 def process_and_call_wrapper_with_hint(func: Callable[[Tuple[Any, ...]], Tuple[Any, ...]]) -> Union[Callable[[Tuple[Any, ...]], Tuple[Any, ...]], None]:
     if not _init_checked:
         check_initialized()
-    __check_args_len(func)  # added this line to ensure processed_arg_names is correct
+    __check_args_len(func)
     return process_and_call_wrapper(func)
 
 def validate_processed_args() -> None:
