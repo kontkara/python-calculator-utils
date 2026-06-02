@@ -4,7 +4,7 @@ import functools
 
 processed_args: Any
 processed_arg_names: Tuple[Any, ...]
-_init_checked = False  # added this variable for process_and_call_wrapper_with_hint to check initialization
+_init_checked: bool = False  # added this variable for process_and_call_wrapper_with_hint to check initialization
 
 func_metadata: Dict[str, str] = {}  # new metadata dictionary for function info
 
@@ -86,3 +86,14 @@ def __set_initial_checked() -> None:
     _init_checked = True
 
 check_initialized = __set_initial_checked
+
+def __process_and_call_wrapper_with_hint(func: Callable[[Tuple[Any, ...]], Tuple[Any, ...]]) -> Union[Callable[[Tuple[Any, ...]], Tuple[Any, ...]], None]:
+    if not callable(func):
+        raise TypeError(f"{func} is not a valid function")
+    return process_and_call_wrapper(func)
+
+def get_func_metadata(func: Callable[[*Any], *Any]) -> Dict[str, str]:
+    if func.__name__ in func_metadata:
+        return func_metadata[func.__name__]
+    else:
+        raise ValueError(f"Function {get_func_name(func)} has no metadata")
