@@ -1,4 +1,5 @@
 from typing import Any, Callable, Union, Tuple, Dict
+
 import functools
 
 processed_args: Any
@@ -79,3 +80,9 @@ def __check_func_return_type(func: Callable[[], Any]) -> None:
             raise ValueError(f"Unexpected return type for {get_func_name(func)}")
     except Exception as e:
         raise ValueError(f"Error calling function {get_func_name(func)}: {e}")
+
+def __set_initial_checked() -> None:
+    global _init_checked
+    _init_checked = True
+
+check_initialized = __set_initial_checked
