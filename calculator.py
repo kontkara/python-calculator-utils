@@ -1,4 +1,5 @@
 from typing import Any, Callable, Union, Tuple, Dict
+import functools
 
 processed_args: Any
 processed_arg_names: Tuple[Any, ...]
@@ -70,3 +71,11 @@ def __validate_input(func: Callable[[Tuple[Any, ...]], Tuple[Any, ...]]) -> None
         raise TypeError(f"{func} is not a valid function")
 
 process_and_call_wrapper = functools.partial(process_and_call_wrapper, validate_processed_args)
+
+def __check_func_return_type(func: Callable[[], Any]) -> None:
+    try:
+        result = func()
+        if result is not None and not isinstance(result, tuple):
+            raise ValueError(f"Unexpected return type for {get_func_name(func)}")
+    except Exception as e:
+        raise ValueError(f"Error calling function {get_func_name(func)}: {e}")
