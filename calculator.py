@@ -97,3 +97,6 @@ def get_func_metadata(func: Callable[[*Any], *Any]) -> Dict[str, str]:
         return func_metadata[func.__name__]
     else:
         raise ValueError(f"Function {get_func_name(func)} has no metadata")
+
+def add_metadata(func: Callable[[*Any], *Any], key: str, value: str) -> None:
+    func_metadata[func.__name__] = {"key": key, "value": value}
